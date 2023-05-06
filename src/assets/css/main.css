@@ -1,0 +1,11 @@
+* {
+  font-family: 'Inter';
+  font-style: normal;
+}
+#app {
+  max-width: 1114px;
+  margin: auto;
+}
+body {
+  background-color: #D8D8D8;
+}
