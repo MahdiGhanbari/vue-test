@@ -44,7 +44,7 @@
     padding: 22px;
   }
 }
-main {
+.main {
   flex: 2;
   padding: 14px;
 }
