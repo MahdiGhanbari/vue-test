@@ -1,32 +1,39 @@
 <template>
-  <div class="section">
-    <h4 class="section__title">Assigned actions</h4>
-    <p class="section__description">The selected actions will run in the background when the user journey gets to
-      this element</p>
-  </div>
-
-  <div class="list">
-    <div v-for="action in ASSIGNED_ACTIONS" class="list__item list__action-item"
-      :class="{ 'is-inactive': true }">
-      <div>
-        <v-icon icon="fa-solid fa-plus" class="list__action-item__icon" size="24" />
-        {{ action }}
-      </div>
-      <span class="budge"> Inactive </span>
+  <div class="home-page">
+    <div class="section">
+      <h4 class="section__title">Assigned actions</h4>
+      <p class="section__description">The selected actions will run in the background when the user journey gets to
+        this element</p>
     </div>
-
-    <div class="list__add-btn list__item">
-      Add actions
-      <v-icon icon="fa-solid fa-plus" />
+  
+    <div class="list">
+      <div v-for="action in ASSIGNED_ACTIONS" class="list__item list__action-item"
+        :class="{ 'is-inactive': true }">
+        <div>
+          <v-icon icon="fa-solid fa-plus" class="list__action-item__icon" size="24" />
+          {{ action }}
+        </div>
+        <span class="budge"> Inactive </span>
+      </div>
+  
+      <RouterLink to="/actions" class="list__add-btn list__item">
+        Add actions
+        <v-icon icon="fa-solid fa-plus" />
+      </RouterLink>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { RouterLink } from 'vue-router';
+
 const ASSIGNED_ACTIONS: Array<object> = []
 </script>
 
 <style scoped lang="scss">
+.home-page {
+  padding: 22px;
+}
 .section {
   &__title {
     font-weight: 600;
@@ -51,6 +58,7 @@ const ASSIGNED_ACTIONS: Array<object> = []
   &__add-btn {
     color: #0052FF;
     font-weight: 600;
+    text-decoration: none;
   }
 
   &__item {

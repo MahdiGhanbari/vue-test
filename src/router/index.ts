@@ -1,17 +1,27 @@
 // Composables
 import { createRouter, createWebHistory } from 'vue-router'
 import IndexVue from '@/views/Index.vue'
+import Actions from '@/views/Actions.vue'
 
 const routes = [
   {
     path: '/',
-    children: [
-      {
-        path: '',
-        name: 'Action',
-        component: IndexVue
-      },
-    ],
+    name: 'Actions',
+    meta: {
+      hasMenu: true,
+      color: '#F9B506',
+      icon: 'fas fa-regular fa-bolt',
+    },
+    component: IndexVue
+  },
+  {
+    path: '/actions',
+    name: 'Add actions',
+    meta: {
+      icon: 'fas fa-regular fa-bolt',
+      to: '/'
+    },
+    component: Actions
   },
 ]
 

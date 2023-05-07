@@ -1,8 +1,8 @@
 <template>
   <v-layout class="layout">
     <div class="sidebar">
-      <div class="sidebar__title">
-        <slot name="sidebar-title"/>
+      <div class="sidebar__header">
+        <slot name="sidebar-header"/>
       </div>
       <div class="sidebar__content">
         <slot name="sidebar-content"/>
@@ -29,7 +29,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  &__title {
+  &__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -37,11 +37,11 @@
     font-weight: 600;
     font-size: 16px;
     line-height: 19px;
-    border-bottom: 1px solid #E3E6E8
+    border-bottom: 1px solid #E3E6E8;
+    height: 70px;
   }
   &__content {
     flex: 1;
-    padding: 22px;
   }
 }
 .main {

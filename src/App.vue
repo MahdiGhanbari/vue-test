@@ -3,14 +3,17 @@
     <Layout>
 
       <!-- sidebar -->
-      <template #sidebar-title>
-        <span class="title">
-          <v-icon icon="fas fa-regular fa-bolt" />
-          Action
+      <template #sidebar-header>
+        <span class="sidebar-title" :style="{color: route.meta.color}">
+          <v-icon v-if="route.path == '/'" icon="fas fa-bolt" size="24"/>
+          <v-btn v-else @click="router.back()" icon variant="text" density="compact">
+            <v-icon icon="fas fa-chevron-left" size="18"/>
+          </v-btn>
+          <div>{{ route.name }}</div>
         </span>
-        <v-menu location="bottom" offset="10 130">
+        <v-menu offset="10 130">
           <template #activator="{props}">
-            <v-btn icon variant="text" v-bind="props">
+            <v-btn v-show="route.meta.hasMenu" icon variant="text" v-bind="props">
               <v-icon icon="fa-solid fa-ellipsis" color="grey" />
             </v-btn>
           </template>
@@ -32,8 +35,10 @@
       </template>
 
       <!--Content,  Assigned actions with details -->
-      <div v-if="ASSIGNED_ACTIONS.length">
-        actions details
+      <div v-if="store.AssignedActions.length">
+        <div v-for="action of store.AssignedActions">
+          {{ action }}
+        </div>
       </div>
       <div v-else class="placeholder">
         <div class="placeholder__text">Your actions will appear here</div>
@@ -45,12 +50,24 @@
 
 <script lang="ts" setup>
   import Layout from '@/layouts/Default.vue'
+  import { useRoute, useRouter } from 'vue-router'
+  import { useDefaultStore } from '@/store'
+
+  // data
   const ASSIGNED_ACTIONS: Array<object> = []
+  const route = useRoute()
+  const router = useRouter()
+  const store = useDefaultStore()
+
+
 </script>
 
 <style scoped lang="scss">
-.title {
-  color: #F9B506;
+.sidebar-title {
+  color: #475461;
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 .main-menu {
   background: #FFFFFF;
