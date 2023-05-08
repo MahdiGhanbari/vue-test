@@ -5,17 +5,15 @@
       <p class="section__description">The selected actions will run in the background when the user journey gets to
         this element</p>
     </div>
-  
+
     <div class="list">
-      <div v-for="action in ASSIGNED_ACTIONS" class="list__item list__action-item"
-        :class="{ 'is-inactive': true }">
-        <div>
-          <v-icon icon="fa-solid fa-plus" class="list__action-item__icon" size="24" />
-          {{ action }}
-        </div>
-        <span class="budge"> Inactive </span>
-      </div>
-  
+      <ActionItem v-for="(_, actGroup) in store.AssignedActions" class="list__item" prepend-icon="fa-solid fa-plus">
+        {{ actGroup }}
+        <template #append:icon>
+          <span v-if="false" class="budge"> Inactive </span>
+        </template>
+      </ActionItem>
+
       <RouterLink to="/actions" class="list__add-btn list__item">
         Add actions
         <v-icon icon="fa-solid fa-plus" />
@@ -26,14 +24,18 @@
 
 <script lang="ts" setup>
 import { RouterLink } from 'vue-router';
+import ActionItem from '@/components/ActionItem.vue';
+import { useDefaultStore } from '@/store'
 
-const ASSIGNED_ACTIONS: Array<object> = []
+const store = useDefaultStore()
+
 </script>
 
 <style scoped lang="scss">
 .home-page {
   padding: 22px;
 }
+
 .section {
   &__title {
     font-weight: 600;
@@ -59,28 +61,11 @@ const ASSIGNED_ACTIONS: Array<object> = []
     color: #0052FF;
     font-weight: 600;
     text-decoration: none;
+    display: inline-block;
   }
-
+  
   &__item {
-    padding: 22px 25px;
-    line-height: 19px;
-    font-size: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  &__item:hover {
-    background-color: #F2F2F3;
-  }
-
-  &__action-item {
-    font-weight: 400;
-    color: #475461;
-
-    &__icon {
-      margin-inline-end: 16px;
-    }
+    padding: 24px;
   }
 
   &__item+&__item {
@@ -98,10 +83,5 @@ const ASSIGNED_ACTIONS: Array<object> = []
     border-radius: 50%;
     display: inline-block;
   }
-}
-
-.is-inactive {
-  color: #C2CCD6;
-  pointer-events: none;
 }
 </style>

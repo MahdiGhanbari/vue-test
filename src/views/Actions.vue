@@ -11,13 +11,13 @@
       <div class="list">
         <div v-for="(actions, actGroup) of list">
           <div class="list__group-title">{{ actGroup }}</div>
-          <div v-for="actName of actions" class="list__action-item">
-            <span>
-              <v-icon icon="fa fa-light fa-tag"/>
-              <span class="list__action-item__name">{{ actName }}</span>
-            </span>
-            <CheckMark :modelValue="selectedActions.includes(actName)" @update:modelValue="mark($event, actName)"/>
-          </div>
+
+          <ActionItem v-for="actName of actions" class="list__action-item" prepend-icon="fa fa-light fa-tag">
+            {{actName}}
+            <template #append:icon>
+              <CheckMark :modelValue="selectedActions.includes(actName)" @update:modelValue="mark($event, actName)"/>
+            </template>
+          </ActionItem>
         </div>
       </div>
     </div>
@@ -34,6 +34,7 @@
 import { ref, computed } from 'vue'
 import CheckMark from '@/components/CheckMark.vue'
 import ActionButton from '@/components/ActionButton.vue'
+import ActionItem from '@/components/ActionItem'
 import { useDefaultStore } from '@/store'
 
 const query = ref('')
@@ -123,17 +124,6 @@ function confirm() {
     color: #9DA8B4;
   }
   &__action-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-block: 14px;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 19px;
-    color: #475461;
-    &__name {
-      margin-inline-start: 16px;
-    }
     &__check {
       width: 24px;
       height: 24px;
