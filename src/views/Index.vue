@@ -7,8 +7,7 @@
     </div>
 
     <div class="list">
-      <ActionItem v-for="(_, actGroup) in store.AssignedActions" class="list__item" prepend-icon="fa-solid fa-plus">
-        {{ actGroup }}
+      <ActionItem v-for="(_, actName) in store.AssignedActions" :name="actName" class="list__item">
         <template #append:icon>
           <span v-if="false" class="budge"> Inactive </span>
         </template>

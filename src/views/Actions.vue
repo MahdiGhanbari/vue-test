@@ -12,8 +12,7 @@
         <div v-for="(actions, actGroup) of list">
           <div class="list__group-title">{{ actGroup }}</div>
 
-          <ActionItem v-for="actName of actions" class="list__action-item" prepend-icon="fa fa-light fa-tag">
-            {{actName}}
+          <ActionItem v-for="actName of actions" :name="actName" :key="actName" class="list__action-item">
             <template #append:icon>
               <CheckMark :modelValue="selectedActions.includes(actName)" @update:modelValue="mark($event, actName)"/>
             </template>
@@ -34,7 +33,7 @@
 import { ref, computed } from 'vue'
 import CheckMark from '@/components/CheckMark.vue'
 import ActionButton from '@/components/ActionButton.vue'
-import ActionItem from '@/components/ActionItem'
+import ActionItem from '@/components/ActionItem.vue'
 import { useDefaultStore } from '@/store'
 
 const query = ref('')
