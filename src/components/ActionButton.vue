@@ -23,10 +23,6 @@ const props = defineProps({
 
 <style scoped lang="scss">
 .action-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
   padding: 14px 22px;
   border-radius: 14px;
   font-weight: 400;

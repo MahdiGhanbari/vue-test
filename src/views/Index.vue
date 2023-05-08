@@ -14,20 +14,20 @@
         </template>
       </ActionItem>
 
-      <RouterLink to="/actions" class="list__add-btn list__item">
+      <ActionItem append-icon="fa-solid fa-plus" class="list__item list__add-btn" @click="router.push('/actions')">
         Add actions
-        <v-icon icon="fa-solid fa-plus" />
-      </RouterLink>
+      </ActionItem>      
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { RouterLink } from 'vue-router';
+import { useRouter } from 'vue-router';
 import ActionItem from '@/components/ActionItem.vue';
 import { useDefaultStore } from '@/store'
 
 const store = useDefaultStore()
+const router = useRouter()
 
 </script>
 
@@ -61,7 +61,6 @@ const store = useDefaultStore()
     color: #0052FF;
     font-weight: 600;
     text-decoration: none;
-    display: inline-block;
   }
   
   &__item {
