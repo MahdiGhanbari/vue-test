@@ -51,7 +51,7 @@ const list = computed(() => {
     for (let actName of ACTIONS[actGroup]) {
       actName = actName.toLowerCase()
       const str = query.value.toLowerCase()
-      const isConfirmed = store.AssignedActions[actName]
+      const isConfirmed = store.assignedActions[actName]
 
       if (actName.search(str) >= 0 && !isConfirmed) {
         result[actGroup] ? result[actGroup].push(actName) : result[actGroup] = [actName]

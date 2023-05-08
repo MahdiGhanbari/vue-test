@@ -7,9 +7,9 @@
     </div>
 
     <div class="list">
-      <ActionItem v-for="(_, actName) in store.AssignedActions" :name="actName" class="list__item">
+      <ActionItem v-for="(action, actName) in store.assignedActions" :disabled="action.inactive" :name="actName" class="list__item">
         <template #append:icon>
-          <span v-if="false" class="budge"> Inactive </span>
+          <span v-if="action.inactive" class="budge"> Inactive </span>
         </template>
       </ActionItem>
 

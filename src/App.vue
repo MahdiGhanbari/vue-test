@@ -18,14 +18,12 @@
             </v-btn>
           </template>
           <div class="main-menu">
-            <div class="main-menu__item">
-              <v-icon icon="fa fa-light fa-toggle-off" />
+            <ActionItem prepend-icon="fa fa-light fa-toggle-off" @click="changeActionState">
+              Make {{ selectedAction?.action.inactive ? 'active' : 'inactive'}}
+            </ActionItem>
+            <ActionItem prepend-icon="fa fa-regular fa-trash-can" style="color: #FF2D55" @click="deleteAction">
               Make inactive
-            </div>
-            <div class="main-menu__item" style="color: #FF2D55">
-              <v-icon icon="fa fa-regular fa-trash-can" />
-              Delete action
-            </div>
+            </ActionItem>
           </div>
         </v-menu>
       </template>
@@ -35,10 +33,12 @@
       </template>
 
       <!--Content,  Assigned actions with details -->
-      <div v-if="store.AssignedActions">
-        <div v-for="(action, actName) of store.AssignedActions">
-          <ActionItem :name="actName"/>
-          
+      <div v-if="store.hasAssignedAct">
+        <div v-for="(action, name) of store.assignedActions" @click="selectedAction = { name, action }"
+          class="action-group"
+          :class="{ 'is-selected': name == selectedAction?.name, 'is-inactive': action.inactive}">
+          <ActionItem :name="name" :disabled="action.inactive" />
+
         </div>
       </div>
       <div v-else class="placeholder">
@@ -50,18 +50,31 @@
 </template>
 
 <script lang="ts" setup>
+import { ref, computed } from 'vue';
 import Layout from '@/layouts/Default.vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useDefaultStore } from '@/store'
+import { useDefaultStore, ActionGroup } from '@/store'
 import ActionItem from './components/ActionItem.vue';
 
 // data
-const ASSIGNED_ACTIONS: Array<object> = []
 const route = useRoute()
 const router = useRouter()
 const store = useDefaultStore()
+const selectedAction= ref<{action: ActionGroup, name: string}>()
 
 
+// methods
+function changeActionState() {
+  if (selectedAction.value) {
+    selectedAction.value.action.inactive = !selectedAction.value.action.inactive
+  }
+}
+function deleteAction() {
+  if (selectedAction.value) {
+    delete store.assignedActions[selectedAction.value?.name]
+    selectedAction.value = undefined
+  }
+}
 </script>
 
 <style scoped lang="scss">
@@ -93,6 +106,16 @@ const store = useDefaultStore()
   }
 }
 
+.action-group {
+  border: 1px solid #E3E6E8;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.action-group + .action-group {
+  margin-top: 14px;
+}
+
 .placeholder {
   background: #F9F9F9;
   border: 1px dashed #9DA8B4;
@@ -112,5 +135,8 @@ const store = useDefaultStore()
     width: 290px;
     text-align: center;
   }
+}
+.is-selected {
+  border: 1px solid #0052FF;
 }
 </style>

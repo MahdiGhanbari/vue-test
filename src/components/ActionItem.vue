@@ -1,5 +1,5 @@
 <template>
-  <div class="action-item" :class="{disabled}">
+  <div class="action-item" :class="{'is-inactive': disabled}">
     <div @click="e => $emit('click:prepend', e)">
       <slot name="prepend:icon">
         <v-icon v-if="prependIcon" :class="prependIcon" size="24"/>
@@ -51,7 +51,7 @@ function getIcon(name: String) {
   align-items: center;
   font-weight: 400;
   color: #475461;
-  
+  cursor: pointer;
   &__content {
     flex: 1;
     margin-inline: 16px;
@@ -65,9 +65,5 @@ function getIcon(name: String) {
   &:hover {
     background-color: #F2F2F3;
   }
-}
-.disabled {
-  color: #C2CCD6;
-  pointer-events: none;
 }
 </style>

@@ -1,23 +1,32 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
-class ActionGroup {
-  inactive: Boolean = false
+export class ActionGroup {
+  inactive: boolean = false
   list: Array<object> = []
 }
 
+export interface ActionCategory{
+  [key: string]: ActionGroup
+}
+
 export const useDefaultStore = defineStore('default', () => {
-  const AssignedActions = ref({})
+  const assignedActions = ref<ActionCategory>({})
 
   function confirmActions(actions: Array<string>) {
-    console.log('actions')
     for(let action of actions) {
-      AssignedActions.value[action] = new ActionGroup()
+      assignedActions.value[action] = new ActionGroup()
     }
   }
 
+  const hasAssignedAct = computed(()=> {
+    const count = Object.keys(assignedActions.value).length
+    return count > 0
+  })
+
   return {
     confirmActions,
-    AssignedActions
+    assignedActions,
+    hasAssignedAct
   }
 })
