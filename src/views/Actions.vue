@@ -1,20 +1,29 @@
 <template>
   <div class="actions-page">
-    <div class="actions-page__main-section">
+    <SideBarHeader class="actions-page__header" disableMenu>
+      <template #prepend>
+        <v-btn to="/" icon variant="text" density="compact">
+          <v-icon icon="fas fa-chevron-left" size="18" />
+        </v-btn>
+      </template>
+      Add actions
+    </SideBarHeader>
+    <div class="actions-page__content">
       <!-- search box -->
       <div class="search-box">
         <v-icon class="fa fa-magnifying-glass" size="16" color="#9DA8B4" />
         <input v-model="query" type="text" placeholder="Search actions..." />
       </div>
-  
+
       <!-- action list -->
       <div class="list">
-        <div v-for="(actions, actGroup) of list">
-          <div class="list__group-title">{{ actGroup }}</div>
+        <div v-for="(actGroups, actCategoryName) of list" :key="actCategoryName">
+          <div class="list__group-title">{{ actCategoryName }}</div>
 
-          <ActionItem v-for="actName of actions" :name="actName" :key="actName" class="list__action-item">
+          <ActionItem v-for="actGroup of actGroups" :name="actGroup.name" :key="actGroup.name"
+            :prependIcon="actGroup.icon" class="list__action-item">
             <template #append:icon>
-              <CheckMark :modelValue="selectedActions.includes(actName)" @update:modelValue="mark($event, actName)"/>
+              <CheckMark :modelValue="selectedActions.includes(actGroup)" @update:modelValue="mark($event, actGroup)" />
             </template>
           </ActionItem>
         </div>
@@ -29,43 +38,51 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue'
 import CheckMark from '@/components/CheckMark.vue'
 import ActionButton from '@/components/ActionButton.vue'
 import ActionItem from '@/components/ActionItem.vue'
-import { useDefaultStore } from '@/store'
+import SideBarHeader from '@/components/SideBarHeader.vue'
+import { useDefaultStore, ActionGroup, ActionCategory } from '@/store'
+import { storeToRefs } from 'pinia'
 
+type ActCatKey = keyof ActionCategory
+
+// data
 const query = ref('')
-const selectedActions = ref([])
+const selectedActions = ref<Array<ActionGroup>>([])
 const store = useDefaultStore()
-const ACTIONS = {
-  'Native Popup actions': ['Tag customer', 'Tag order', 'Send email notification', 'Select digital product', 'Make HTTPS request'],
-  'Integrations with other apps': ['Send data to Google Sheet']
-}
+const { ALL_ACTIONS } = storeToRefs(store)
 
+// computed
 const list = computed(() => {
-  const result = {}
+  const result: ActionCategory = {}
 
-  for (let actGroup in ACTIONS) {
-    for (let actName of ACTIONS[actGroup]) {
-      actName = actName.toLowerCase()
+  for (let actCategoryName in ALL_ACTIONS.value) {
+    for (let actGroup of ALL_ACTIONS.value[actCategoryName as ActCatKey]) {
+      const { name, isConfirmed } = actGroup
       const str = query.value.toLowerCase()
-      const isConfirmed = store.assignedActions[actName]
 
-      if (actName.search(str) >= 0 && !isConfirmed) {
-        result[actGroup] ? result[actGroup].push(actName) : result[actGroup] = [actName]
+      if (name.search(str) >= 0 && !isConfirmed) {
+        if (actCategoryName in result) {
+          result[actCategoryName as ActCatKey].push(actGroup)
+        } else {
+          result[actCategoryName as ActCatKey] = [actGroup]
+        }
       }
     }
+
   }
   return result
 })
 
-function mark(isAdded, actName) {
-  if(isAdded) {
-    selectedActions.value.push(actName)
+// methods
+function mark(isAdded: boolean, actGroup: ActionGroup) {
+  if (isAdded) {
+    selectedActions.value.push(actGroup)
   } else {
-    const index = selectedActions.value.indexOf(actName)
+    const index = selectedActions.value.findIndex(actItem => actItem.name == actGroup.name)
     selectedActions.value.splice(index, 1)
   }
 }
@@ -85,11 +102,17 @@ function confirm() {
   display: flex;
   flex-direction: column;
   height: 100%;
-  &__main-section {
+
+  &__header {
+    color: #475461;
+  }
+
+  &__content {
     flex: 1;
     padding: 22px;
   }
 }
+
 .search-box {
   display: flex;
   align-items: center;
@@ -111,6 +134,7 @@ function confirm() {
     outline: none;
   }
 }
+
 .list {
   margin-top: 14px;
 
@@ -122,6 +146,7 @@ function confirm() {
     padding-block: 14px;
     color: #9DA8B4;
   }
+
   &__action-item {
     &__check {
       width: 24px;
@@ -131,6 +156,7 @@ function confirm() {
     }
   }
 }
+
 .confiramtion {
   display: flex;
   align-items: center;

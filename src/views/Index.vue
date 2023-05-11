@@ -1,21 +1,30 @@
 <template>
-  <div class="home-page">
-    <div class="section">
-      <h4 class="section__title">Assigned actions</h4>
-      <p class="section__description">The selected actions will run in the background when the user journey gets to
-        this element</p>
-    </div>
+  <div>
+    <SideBarHeader class="header" has-main-menu>
+      <template #prepend>
+        <v-icon icon="fas fa-bolt" size="24" />
+      </template>
+      Action
+    </SideBarHeader>
+    <div class="content">
+      <div>
+        <h4 class="content__title">Assigned actions</h4>
+        <p class="content__description">The selected actions will run in the background when the user journey gets to
+          this element</p>
+      </div>
 
-    <div class="list">
-      <ActionItem v-for="(action, actName) in store.assignedActions" :disabled="action.inactive" :name="actName" class="list__item">
-        <template #append:icon>
-          <span v-if="action.inactive" class="budge"> Inactive </span>
-        </template>
-      </ActionItem>
+      <div class="list">
+        <ActionItem v-for="actGroup in store.assignedActions" :key="actGroup.name" :disabled="actGroup.inactive"
+          :name="actGroup.name" :prepend-icon="actGroup.icon" class="list__item" >
+          <template #append:icon>
+            <span v-if="actGroup.inactive" class="budge"> Inactive </span>
+          </template>
+        </ActionItem>
 
-      <ActionItem append-icon="fa-solid fa-plus" class="list__item list__add-btn" @click="router.push('/actions')">
-        Add actions
-      </ActionItem>      
+        <ActionItem append-icon="fa-solid fa-plus" class="list__item list__add-btn" @click="router.push('/actions')">
+          Add actions
+        </ActionItem>
+      </div>
     </div>
   </div>
 </template>
@@ -24,6 +33,7 @@
 import { useRouter } from 'vue-router';
 import ActionItem from '@/components/ActionItem.vue';
 import { useDefaultStore } from '@/store'
+import SideBarHeader from '@/components/SideBarHeader.vue';
 
 const store = useDefaultStore()
 const router = useRouter()
@@ -31,11 +41,13 @@ const router = useRouter()
 </script>
 
 <style scoped lang="scss">
-.home-page {
-  padding: 22px;
+.header {
+  color: #F9B506;
 }
 
-.section {
+.content {
+  padding: 22px;
+
   &__title {
     font-weight: 600;
     line-height: 19px;
@@ -61,7 +73,7 @@ const router = useRouter()
     font-weight: 600;
     text-decoration: none;
   }
-  
+
   &__item {
     padding: 24px;
   }
