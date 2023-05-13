@@ -9,7 +9,6 @@ export class ActionGroup {
   isConfirmed: boolean = false
   name: string
   icon: string | undefined
-  list: Array<object> = []
 
   constructor(name: string, icon?: string) {
     this.name = name
@@ -21,13 +20,38 @@ export class ActionGroup {
   }
 }
 
+type Tag = { label: string, color: string }
+export class TagCustomer extends ActionGroup {
+  tags: Array<Tag>
+  constructor() {
+    super('Tag customer', 'fa-solid fa-user-tag')
+    this.tags = []
+  }
+
+  private getRandomColor() {
+    return '#' + Math.random().toString(16).substr(-6)
+  }
+
+  addTag(label: string) {
+    const color = this.getRandomColor()
+    this.tags.push({ label, color })
+  }
+
+  removeTag(tag: Tag) {
+    const index = this.tags.findIndex(({ label, color }) => {
+      return tag.label == label && tag.color == color
+    })
+    this.tags.splice(index, 1)
+  }
+}
+
 export const useDefaultStore = defineStore('default', () => {
   // state
   const assignedActions = ref<Array<ActionGroup>>([])
   const selectedAction = ref<ActionGroup | undefined>()
   const ALL_ACTIONS = ref<ActionCategory>({
     'Native Popup actions': [
-      new ActionGroup('Tag customer', 'fa-solid fa-user-tag'),
+      new TagCustomer(),
       new ActionGroup('Tag order', 'fas fa-thin fa-tag'),
       new ActionGroup('Send email notification', 'fa-regular fa-envelope'),
       new ActionGroup('Select digital product', "fa-solid fa-file-circle-check"),

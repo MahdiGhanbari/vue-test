@@ -37,7 +37,6 @@ defineEmits(['click:prepend', 'click:append'])
   align-items: center;
   font-weight: 400;
   color: #475461;
-  cursor: pointer;
 
   &__content {
     flex: 1;

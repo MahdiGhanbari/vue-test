@@ -12,3 +12,13 @@ body {
 .is-inactive {
   color: #C2CCD6 !important;
 }
+input::placeholder {
+  color: #9DA8B4;
+}
+input:focus {
+  outline: none;
+}
+input {
+  border: none;
+  background: inherit;
+}

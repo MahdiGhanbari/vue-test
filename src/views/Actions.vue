@@ -125,14 +125,9 @@ function confirm() {
 
   & input {
     flex: 1;
-    border: none;
-    background: inherit;
     margin-inline-start: 16px;
   }
 
-  & input:focus {
-    outline: none;
-  }
 }
 
 .list {
@@ -165,10 +160,5 @@ function confirm() {
   padding: 22px;
   border-top: 1px solid #E3E6E8;
   box-shadow: 0px 14px 60px rgba(0, 0, 0, 0.09);
-}
-</style>
-<style>
-.search-box input::placeholder {
-  color: #9DA8B4;
 }
 </style>
