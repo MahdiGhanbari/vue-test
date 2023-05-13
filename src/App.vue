@@ -9,8 +9,7 @@
 
       <!--Content,  Assigned actions with details -->
       <div v-if="store.hasAssignedAct">
-        <div v-for="actGroup of store.assignedActions" @click="store.selectedAction = actGroup" :key="actGroup.name"
-          class="action-group"
+        <div v-for="actGroup of store.assignedActions" :key="actGroup.name" class="action-group"
           :class="{ 'is-selected': actGroup.name == store.selectedAction?.name, 'is-inactive': actGroup.inactive }">
           <ActionItem :name="actGroup.name" :prepend-icon="actGroup.icon" :disabled="actGroup.inactive" />
           <!-- TODO: the all actions of a group will be appear here -->

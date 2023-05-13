@@ -15,7 +15,7 @@
 
       <div class="list">
         <ActionItem v-for="actGroup in store.assignedActions" :key="actGroup.name" :disabled="actGroup.inactive"
-          :name="actGroup.name" :prepend-icon="actGroup.icon" class="list__item" >
+          :name="actGroup.name" :prepend-icon="actGroup.icon" class="list__item" @click="goToActPage(actGroup)">
           <template #append:icon>
             <span v-if="actGroup.inactive" class="budge"> Inactive </span>
           </template>
@@ -32,11 +32,18 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
 import ActionItem from '@/components/ActionItem.vue';
-import { useDefaultStore } from '@/store'
+import { ActionGroup, useDefaultStore } from '@/store'
 import SideBarHeader from '@/components/SideBarHeader.vue';
 
 const store = useDefaultStore()
 const router = useRouter()
+
+// methods
+function goToActPage(actGroup: ActionGroup) {
+  store.selectedAction = actGroup
+  const name = actGroup.name.replace(/\s+/g, '_')
+  router.replace({ name: 'Action', params: { name } })
+}
 
 </script>
 
